@@ -1,0 +1,266 @@
+:root {
+    /* Colors */
+    --bg-color: #fcfcfc;
+    --text-color: #2d3436;
+    --accent-color: #0984e3;
+    --accent-soft: #74b9ff;
+
+    /* Typography */
+    --font-main: 'Inter', sans-serif;
+
+    /* Spacing */
+    --gap-lg: 60px;
+    --gap-md: 30px;
+    --gap-sm: 20px;
+    --padding-lg: 80px;
+    --padding-md: 40px;
+    --padding-sm: 20px;
+
+    /* Sizing */
+    --blob-size: 800px;
+    --border-radius-lg: 30px;
+    --border-radius-md: 20px;
+    --border-radius-sm: 10px;
+    --logo-size-lg: 300px;
+    --logo-size-md: 200px;
+    --logo-size-sm: 140px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    /* White Theme Background */
+    background: radial-gradient(circle at center, #ffffff 0%, #f0f4f8 100%);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    width: 100vw;
+    /* Ensure full viewport width */
+    height: 100dvh;
+    /* Dynamic viewport height for mobile */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 0;
+    /* Explicit reset */
+    touch-action: none;
+    /* Prevent touch scrolling */
+}
+
+/* Mesh Gradients (Breathing Blobs) */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    width: var(--blob-size);
+    height: var(--blob-size);
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.2;
+    z-index: -2;
+    animation: floatBlob 20s ease-in-out infinite;
+}
+
+body::before {
+    background: #00f2ff;
+    top: -200px;
+    left: -200px;
+}
+
+body::after {
+    background: #bd00ff;
+    bottom: -200px;
+    right: -200px;
+    animation-delay: -10s;
+}
+
+@keyframes floatBlob {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(50px, 100px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-50px, 50px) scale(0.9);
+    }
+}
+
+/* Main Container */
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+main {
+    /* Glassmorphism Card - White Theme */
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    border-radius: var(--border-radius-lg);
+    padding: var(--padding-lg);
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-lg);
+    contain: layout style paint;
+}
+
+/* Logo */
+.logo-container {
+    width: var(--logo-size-lg);
+    height: var(--logo-size-lg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    will-change: transform;
+    transform: translateZ(0);
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.05));
+    animation: breathe 15s ease-in-out infinite;
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        transform: scale(1) translateZ(0);
+    }
+
+    50% {
+        transform: scale(1.03) translateZ(0);
+    }
+}
+
+/* Visualizer */
+.visualizer-container {
+    width: 100%;
+    max-width: 800px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    will-change: contents;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+
+    /* Tablet / Landscape */
+    main {
+        padding: 40px;
+        gap: 30px;
+        width: 90%;
+        max-width: 700px;
+    }
+
+    .logo-container {
+        width: 200px;
+        height: 200px;
+    }
+
+    .visualizer-container {
+        height: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Portrait Tablet / Large Phone */
+    main {
+        padding: 30px;
+        gap: 20px;
+        width: 95%;
+    }
+
+    .logo-container {
+        width: 180px;
+        height: 180px;
+    }
+
+    .visualizer-container {
+        height: 100px;
+        margin-top: 10px;
+    }
+
+    .message {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* Mobile */
+    .container {
+        padding: 10px;
+    }
+
+    main {
+        padding: 20px 15px;
+        gap: 20px;
+        border-radius: 20px;
+    }
+
+    .logo-container {
+        width: 140px;
+        height: 140px;
+    }
+
+    .visualizer-container {
+        height: 80px;
+        margin-top: 5px;
+    }
+
+    .message {
+        font-size: 1.1rem;
+    }
+}
+
+#fullscreenBtn {
+    position: fixed;
+    bottom: 22px;
+    right: 20px;
+    z-index: 1000;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

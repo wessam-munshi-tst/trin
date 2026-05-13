@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="لوحة تحكم الروبوت التفاعلي">
+    <title>Robot Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="/static/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>لوحة التحكم</h1>
+        </header>
+
+        <!-- Live Stats -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-content">
+                    <span class="stat-value" id="connectionCount">0</span>
+                    <span class="stat-label">الاتصالات النشطة</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <span class="stat-value" id="uptime">0s</span>
+                    <span class="stat-label">وقت التشغيل</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Controls -->
+        <section class="card">
+            <h2 class="card-title">التحكم السريع</h2>
+            <div class="control-buttons">
+                <button class="btn btn-danger" id="killBtn">
+                    إيقاف فوري
+                </button>
+                <button class="btn btn-toggle" id="muteBtn">
+                    <span class="btn-text">كتم الصوت</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Voice Selection -->
+        <section class="card">
+            <h2 class="card-title">إعدادات الصوت</h2>
+            <label class="form-label" for="voiceSelect">اختر الصوت</label>
+            <select id="voiceSelect" class="form-select">
+                <option value="">جاري التحميل...</option>
+            </select>
+            <p class="current-voice">الصوت الحالي: <strong id="currentVoice">-</strong></p>
+        </section>
+
+        <!-- Speak Phrases -->
+        <section class="card">
+            <h2 class="card-title">تشغيل عبارة صوتية</h2>
+            <p class="card-description">اختر العبارة ثم اضغط تشغيل</p>
+            <select 
+                id="phraseSelect" 
+                style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #dfe6e9;border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
+                <option value="أهلا وسهلا بك تفضل">أهلا وسهلا بك تفضل</option>
+                  <option value="لكل طموح تبذلينه، هناك أثر مكافئ له في النجاح ومساوٍ له في الاتجاه.. استمري">لكل طموح تبذلينه</option>
+              
+            </select>
+            <button class="btn btn-primary" id="speakPhraseBtn">
+                🔊 تشغيل العبارة
+            </button>
+            <p id="phraseStatus" style="margin-top:8px;font-size:0.9rem;color:#636e72;"></p>
+        </section>
+
+        <!-- Speak Text -->
+        <section class="card">
+            <h2 class="card-title">إرسال نص للتحدث</h2>
+            <textarea 
+                id="speakText" 
+                class="form-textarea"
+                placeholder="اكتب النص المراد تشغيله..."
+                rows="3"></textarea>
+            <button class="btn btn-primary" id="speakBtn">
+                تشغيل النص
+            </button>
+        </section>
+
+        <!-- Image Display -->
+        <section class="card">
+            <h2 class="card-title">عرض صورة على الشاشة</h2>
+            <p class="card-description">ستظهر الصورة في صفحة الشات بوت لمدة 15 ثانية</p>
+            <select 
+                id="imageUrl" 
+                style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #dfe6e9;border-radius:8px;font-size:0.95rem;box-sizing:border-box;">
+                <option value="https://s-m.com.sa/mg/g1.jpg">الدور الأرضي</option>
+                <option value="https://s-m.com.sa/mg/g2.jpg">الدور الأول</option>
+                <option value="https://s-m.com.sa/mg/g3.jpg">الدور الثاني</option>
+                <option value="https://s-m.com.sa/mg/g4.jpg">الدور الثالث</option>
+                <option value="https://s-m.com.sa/mg/g5.jpg">الدور الرابع</option>
+            </select>
+            <button class="btn btn-primary" id="showImageBtn">
+                عرض الصورة
+            </button>
+            <p id="imageStatus" style="margin-top:8px;font-size:0.9rem;color:#636e72;"></p>
+        </section>
+
+        <!-- Excel Upload -->
+        <section class="card">
+            <h2 class="card-title">رفع ملف بيانات الموظفين</h2>
+            <p class="card-description">رفع ملف إكسل جديد سيحدّث بيانات البوت فوراً ويعيد تشغيل جميع الجلسات</p>
+            <input type="file" id="excelFile" accept=".xlsx,.xls" class="form-input" style="margin-bottom:10px">
+            <button class="btn btn-primary" id="uploadExcelBtn">
+                رفع الملف
+            </button>
+            <p id="excelStatus" style="margin-top:8px;font-size:0.9rem;color:#636e72;"></p>
+        </section>
+
+        <!-- System Instructions -->
+        <section class="card">
+            <h2 class="card-title">تعليمات النظام</h2>
+            <p class="card-description">تحديث التعليمات سيعيد تشغيل جميع الجلسات</p>
+            <textarea 
+                id="instructionsText" 
+                class="form-textarea form-textarea-large"
+                placeholder="تعليمات النظام..."
+                rows="6"></textarea>
+            <button class="btn btn-primary" id="instructionsBtn">
+                حفظ التعليمات
+            </button>
+        </section>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast" role="alert"></div>
+    </div>
+
+    <script src="/static/admin.js"></script>
+    <script>
+        // Speak Phrase
+        document.getElementById('speakPhraseBtn').addEventListener('click', async () => {
+            const text = document.getElementById('phraseSelect').value;
+            const statusEl = document.getElementById('phraseStatus');
+            statusEl.textContent = 'جاري التشغيل...';
+            statusEl.style.color = '#636e72';
+            try {
+                const res = await fetch('/admin/speak', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+                const data = await res.json();
+                statusEl.textContent = 'تم تشغيل العبارة بنجاح ✓';
+                statusEl.style.color = '#00b894';
+            } catch (e) {
+                statusEl.textContent = 'حدث خطأ أثناء التشغيل';
+                statusEl.style.color = '#e17055';
+            }
+        });
+
+        // Show Image
+        document.getElementById('showImageBtn').addEventListener('click', async () => {
+            const url = document.getElementById('imageUrl').value.trim();
+            const statusEl = document.getElementById('imageStatus');
+            if (!url) {
+                statusEl.textContent = 'الرجاء إدخال رابط الصورة';
+                statusEl.style.color = '#e17055';
+                return;
+            }
+            statusEl.textContent = 'جاري الإرسال...';
+            statusEl.style.color = '#636e72';
+            try {
+                const res = await fetch('/admin/show-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await res.json();
+                statusEl.textContent = data.status === 'ok' ? 'تم عرض الصورة بنجاح ✓' : (data.message || 'حدث خطأ');
+                statusEl.style.color = data.status === 'ok' ? '#00b894' : '#e17055';
+            } catch (e) {
+                statusEl.textContent = 'حدث خطأ أثناء الإرسال';
+                statusEl.style.color = '#e17055';
+            }
+        });
+        document.getElementById('uploadExcelBtn').addEventListener('click', async () => {
+            const fileInput = document.getElementById('excelFile');
+            const statusEl = document.getElementById('excelStatus');
+            if (!fileInput.files.length) {
+                statusEl.textContent = 'الرجاء اختيار ملف أولاً';
+                statusEl.style.color = '#e17055';
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            statusEl.textContent = 'جاري الرفع...';
+            statusEl.style.color = '#636e72';
+            try {
+                const res = await fetch('/admin/upload-excel', { method: 'POST', body: formData });
+                const data = await res.json();
+                statusEl.textContent = data.message || data.status;
+                statusEl.style.color = data.status === 'error' ? '#e17055' : '#00b894';
+            } catch (e) {
+                statusEl.textContent = 'حدث خطأ أثناء الرفع';
+                statusEl.style.color = '#e17055';
+            }
+        });
+    </script>
+</html>
